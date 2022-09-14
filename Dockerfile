@@ -52,7 +52,7 @@ RUN set -ex \
 
 RUN set -ex \
     && apk update \
-    && apk add --no-cache libstdc++ openssl git bash c-ares-dev libpq-dev \
+    && apk add --no-cache libstdc++ openssl git bash c-ares-dev libpq-dev gnu-libiconv \
     && apk add --no-cache --virtual .build-deps autoconf dpkg-dev dpkg file g++ gcc libc-dev make php81-dev php81-pear pkgconf re2c pcre-dev pcre2-dev zlib-dev libtool automake libaio-dev openssl-dev curl-dev \
     # download
     && cd /tmp \
@@ -74,6 +74,7 @@ RUN set -ex \
     && echo "opcache.enable_cli = 'On'" >> /etc/php81/conf.d/00_opcache.ini \
     && echo "extension=swoole.so" > /etc/php81/conf.d/50_swoole.ini \
     && echo "swoole.use_shortname = 'Off'" >> /etc/php81/conf.d/50_swoole.ini \
+    && ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php \
     # ---------- clear works ----------
     && apk del .build-deps \
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/local/bin/php* \
