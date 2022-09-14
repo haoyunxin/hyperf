@@ -73,10 +73,10 @@ RUN set -ex \
     && echo "memory_limit=1G" > /etc/php81/conf.d/00_default.ini \
     && echo "opcache.enable_cli = 'On'" >> /etc/php81/conf.d/00_opcache.ini \
     && echo "extension=swoole.so" > /etc/php81/conf.d/50_swoole.ini \
-    && echo "swoole.use_shortname = 'Off'" >> /etc/php81/conf.d/50_swoole.ini \
-    && ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php \
-    # ---------- clear works ----------
-    && apk del .build-deps \
+    && echo "swoole.use_shortname = 'Off'" >> /etc/php81/conf.d/50_swoole.ini
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+# ---------- clear works ----------
+RUN apk del .build-deps \
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/local/bin/php* \
     # php info
     && php -v \
